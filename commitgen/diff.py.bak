@@ -69,7 +69,7 @@ class AddRemExtractor(object):
         lines = get_added_lines(parsed_diff_file, marker=self.marker) \
                 + get_removed_lines(parsed_diff_file, marker=self.marker)
         if self.line_filter:
-            return list(filter(self.line_filter, lines))
+            return filter(self.line_filter, lines)
         else:
             return lines
 
@@ -107,6 +107,6 @@ class PerFileExtractor(object):
             for hunk in remfile:
                 modified_lines += [line.value for line in hunk]
         if self.line_filter:
-            return list(filter(self.line_filter, modified_lines))
+            return filter(self.line_filter, modified_lines)
         else:
             return modified_lines

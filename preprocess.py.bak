@@ -31,7 +31,7 @@ desc = "Help for preprocess"
 try:
     work_dir = os.environ['WORK_DIR']
 except Exception:
-    print("Please set env. variable WORK_DIR, for example use: env WORK_DIR=. python preprocess.py")
+    print "Please set env. variable WORK_DIR, for example use: env WORK_DIR=. python preprocess.py"
 
 parser = argparse.ArgumentParser(description=desc)
 
@@ -90,11 +90,11 @@ parser.add_argument('--no_len_filters', "-nf",
 args = parser.parse_args()
 
 if args.language is None:
-    print("Please choose a language")
+    print "Please choose a language"
     exit()
 
 if args.only_added and args.only_removed:
-    print("Choose only_added or only_removed")
+    print "Choose only_added or only_removed"
     exit()
 
 if args.lexer == "chunks":
@@ -137,13 +137,13 @@ ignore_list = [Comment, String, Whitespace, Text]
 
 commits_path = os.path.join(work_dir, args.commits_path)
 if not os.path.isdir(commits_path):
-    print(commits_path + " does not exist")
+    print commits_path + " does not exist"
     exit()
 
 raw_dataset = RawDataset(commits_path)
 
 commits = extract_commits(raw_dataset, code_extractor, filters=extract_filters)
-print("Extracted " + str(len(commits)) + " commits")
+print "Extracted " + str(len(commits)) + " commits"
 
 
 parsed_commits = parse_commits(commits, tokenizer, lexer,
@@ -151,7 +151,7 @@ parsed_commits = parse_commits(commits, tokenizer, lexer,
                                ignore_types=ignore_list,
                                marker=marker)
 
-print("Parsed " + str(len(parsed_commits)) + " commits")
+print "Parsed " + str(len(parsed_commits)) + " commits"
 
 
 from collections import Counter
@@ -161,8 +161,8 @@ for parsed_commit in parsed_commits:
     words.update(parsed_commit.nl_tokens)
     code_tokens.update(parsed_commit.code_tokens)
 
-print("Average NL length = " + str(np.mean([len(pc.nl_tokens) for pc in parsed_commits])))
-print("average Source Code length = " + str(np.mean([len(pc.code_tokens) for pc in parsed_commits])))
+print "Average NL length = " + str(np.mean([len(pc.nl_tokens) for pc in parsed_commits]))
+print "average Source Code length = " + str(np.mean([len(pc.code_tokens) for pc in parsed_commits]))
 
 project_name = args.commits_path.split("_")[0]
 pickle_file_name = project_name
@@ -180,4 +180,4 @@ if not os.path.isdir(pickle_store_path):
 
 with open(os.path.join(pickle_store_path, pickle_file_name), "wb") as f:
     pickle.dump(parsed_commits, f)
-    print("Dumped processed commits in " + os.path.join(pickle_store_path, pickle_file_name))
+    print "Dumped processed commits in " + os.path.join(pickle_store_path, pickle_file_name)

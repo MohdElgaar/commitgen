@@ -35,7 +35,7 @@ gen = read_file(args.gen)
 ref = read_file(args.ref)
 
 sims = []
-for idx, gen_nl in list(gen.items()):
+for idx, gen_nl in gen.items():
     try:
         ref_nl = ref[idx]
         sims.append((idx,Levenshtein.ratio(gen_nl, ref_nl)))
@@ -46,9 +46,9 @@ sims = sorted(sims, key=lambda x: x[1], reverse=True)
 
 
 for idx, sim in sims[:args.limit]:
-    print("REF:\t" + ref[idx])
-    print("GEN:\t" + gen[idx])
-    print("SIM:\t" + str(sim))
-    print('=======================')
+    print "REF:\t" + ref[idx]
+    print "GEN:\t" + gen[idx]
+    print "SIM:\t" + str(sim)
+    print '======================='
     
 

@@ -35,7 +35,6 @@ function get_predictions(state, ml, bs, enc, dec)
 
 		-- now beam search on the second model
 		local prediction, aligns, alphas = unpack(beam(ps, all_h:narrow(1, 1, 1), batch.infmask:narrow(2, 1, 1), ml, bs, dec))
-
 		if #prediction == 0 then
 			table.insert(predictions, {batch.ids[1], 'mysql'})
 		else

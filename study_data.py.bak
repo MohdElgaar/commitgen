@@ -63,11 +63,11 @@ raw_dataset = RawDataset(data_path)
 all_filters = []
 atomic_filters = [is_atomic]
 if args.only_added:
-    print("Using commits with only added lines")
+    print "Using commits with only added lines"
     all_filters.append(is_only_added)
     atomic_filters.append(is_only_added)
 elif args.only_removed:
-    print("Using commits with only removed lines")
+    print "Using commits with only removed lines"
     all_filters.append(is_only_removed)
     atomic_filters.append(is_only_removed)
 
@@ -88,15 +88,15 @@ parsed_atomic_commits = parse_commits(atomic_commits, treebank_tokenizer,
                                       ignore_types=ignore_list,
                                       marker=marker)
 
-print("Parsed Commits " + str(len(parsed_commits)))
-print("Atomic Parsed Commits " + str(len(parsed_atomic_commits)))
+print "Parsed Commits " + str(len(parsed_commits))
+print "Atomic Parsed Commits " + str(len(parsed_atomic_commits))
 
 ln_code_len_filter = get_len_filter(100, 100)
 
-filtered_parsed_atomic_commits = list(filter(ln_code_len_filter, parsed_atomic_commits))
-filtered_parsed_commits = list(filter(ln_code_len_filter, parsed_commits))
+filtered_parsed_atomic_commits = filter(ln_code_len_filter, parsed_atomic_commits)
+filtered_parsed_commits = filter(ln_code_len_filter, parsed_commits)
 
-print("Filtered Parsed Commits " + str(len(filtered_parsed_commits)))
-print("Atomic Filtered Parsed Commits " + str(len(filtered_parsed_atomic_commits)))
-print("Increased size: " + str(1.0*len(filtered_parsed_commits)/ len(filtered_parsed_atomic_commits)))
+print "Filtered Parsed Commits " + str(len(filtered_parsed_commits))
+print "Atomic Filtered Parsed Commits " + str(len(filtered_parsed_atomic_commits))
+print "Increased size: " + str(1.0*len(filtered_parsed_commits)/ len(filtered_parsed_atomic_commits))
 

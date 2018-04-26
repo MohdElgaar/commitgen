@@ -4,7 +4,7 @@
 import warnings
 import tokenize
 from token import tok_name
-from io import StringIO
+from StringIO import StringIO
 from pygments.lexers.c_cpp import CppLexer
 from pygments.lexers.javascript import JavascriptLexer
 from pygments.lexers.jvm import JavaLexer
@@ -74,8 +74,8 @@ class CodeChunkTokenizer():
         try:
             code = "".join([code_line.decode('ascii', errors='ignore')
                             for code_line in code_lines])
-            types, tokens= list(zip(*[(ttype, token) for ttype, token in self.lexer.get_tokens(code)
-                                  if not in_any(ttype, ignore_types)]))
+            types, tokens= zip(*[(ttype, token) for ttype, token in self.lexer.get_tokens(code)
+                                  if not in_any(ttype, ignore_types)])
             if return_types:
                 return tokens, types
             else:
@@ -118,9 +118,9 @@ class CodeChunkTokenizer():
             warnings.warn(str(e))
             return []
 
-        tokens, types = list(zip(*tokens_types))
+        tokens, types = zip(*tokens_types)
         if return_types:
-            return tokens, list(map(tok_name.__getitem__, types))
+            return tokens, map(tok_name.__getitem__, types)
         return tokens
 
     def batch_tokenize(self, code_line_chunks, ignore_types=(), num_processes=cpu_count()):
@@ -200,16 +200,13 @@ class CodeLinesTokenizer():
         for code_line in code_lines:
             try:
                 code_line = code_line.strip().decode('utf-8').encode('ascii', 'replace')
-            except:
-                code_line = code_line.strip().encode('ascii', 'replace')
-            try:
-                ttypes, ttokens = list(zip(*[(ttype, token) for ttype, token in self.lexer.get_tokens(code_line)
-                                    if not in_any(ttype, ignore_types)]))
-            except:
-                ttypes, ttokens = [],[]
-            tokens += ttokens
-            if return_types:
-                types += ttypes
+                ttypes, ttokens = zip(*[(ttype, token) for ttype, token in self.lexer.get_tokens(code_line)
+                                        if not in_any(ttype, ignore_types)])
+                tokens += ttokens
+                if return_types:
+                    types += ttypes
+            except Exception as e:
+                warnings.warn(str(e))
         if return_types:
             return tokens, types
         else:
@@ -250,9 +247,9 @@ class CodeLinesTokenizer():
                 warnings.warn(str(e))
 
         if all_tokens_types:
-            tokens, types = list(zip(*all_tokens_types))
+            tokens, types = zip(*all_tokens_types)
             if return_types:
-                return tokens, list(map(tok_name.__getitem__, types))
+                return tokens, map(tok_name.__getitem__, types)
             return tokens
         else:
             return []

@@ -52,12 +52,12 @@ to_save_path= args.save_path
 dataset_lang = dataset + "." + language
 
 vocab_file_name = path.join(*[work_dir, "preprocessing", dataset_lang + ".vocab.json"])
-print(vocab_file_name)
+print vocab_file_name
 with open(vocab_file_name, "r") as f:
     vocab = json.load(f)
 
 test_file_name = path.join(*[work_dir, "preprocessing", dataset_lang + ".test.json"])
-print(test_file_name)
+print test_file_name
 with open(test_file_name, "r") as f:
     test_data = json.load(f)
 
@@ -78,12 +78,12 @@ if not path.isdir(alignments_dir):
 
 for test, prediction, attention in zip(test_data, predictions, attentions):
     name = path.join(alignments_dir, str(test["id"]) + ".png")
-    code_tokens = list(map(get_code, test["code_num"]))
+    code_tokens = map(get_code, test["code_num"])
     pred_nl_tokens = get_prediction_nl(prediction)
     alphas = get_attentions(attention)
     aspect = 1.0 * len(pred_nl_tokens) / len(code_tokens)
-    print(code_tokens)
-    print(pred_nl_tokens)
+    print code_tokens
+    print pred_nl_tokens
     # values after are zeroes due to padding
     #print alphas[:len(code_tokens)]
     try:
@@ -96,4 +96,4 @@ for test, prediction, attention in zip(test_data, predictions, attentions):
         plt.tight_layout()
         plt.savefig(name)
     except Exception as e:
-        print(e)
+        print e

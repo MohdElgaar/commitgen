@@ -20,7 +20,7 @@ def dump_diff(sha, diff_string, diff_path):
         try:
             diff_file.write(diff_string.encode("utf-8"))
         except Exception as e:
-            print(e)
+            print e
 
 def remaining(gh):
     result = int(gh.x_ratelimit_remaining)
@@ -50,21 +50,21 @@ def get_commit_info(gh, account, project, json_path):
                         if commit.sha not in existing_json_files:
                             dump_json(commit, json_path)
                 page += 1
-                print("Page " + str(page))
-                print("Remaining Quota:  " + str(remaining(gh)))
+                print "Page " + str(page)
+                print "Remaining Quota:  " + str(remaining(gh))
             except ApiError as e:
-                print(e)
+                print e
         else:
             reset_time_value = reset_time(gh)
-            print("Waiting until " + str(datetime.fromtimestamp(reset_time_value)))
+            print "Waiting until " + str(datetime.fromtimestamp(reset_time_value))
             waiting_time = reset_time_value - time.time()
             if waiting_time > 0:
                 time.sleep(waiting_time)
             else:
                 if tries > 10:
-                    print("Waited too long and quota did not update, please try again later.")
+                    print "Waited too long and quota did not update, please try again later."
                     break
-                print("Waiting one extra minute to allow for quota update...")
+                print "Waiting one extra minute to allow for quota update..."
                 time.sleep(60)
                 tries += 1
 
@@ -84,14 +84,14 @@ def get_diff_files(gh, account, project, json_path, diff_path):
                     response, more = commits_url(sha).get()
                     dump_diff(sha, response, diff_path)
                 except ApiError as e:
-                    print(e)
-                    print("Maybe diff file was too big?")
+                    print e
+                    print "Maybe diff file was too big?"
             else:
-                print("Waiting until " + str(datetime.fromtimestamp(reset_time(gh))))
+                print "Waiting until " + str(datetime.fromtimestamp(reset_time(gh)))
                 waiting_time = reset_time(gh) - round(time.time(), 0) + 10
                 time.sleep(waiting_time)
 
-        print('[progress] >> %2.2f%%\r' % (float(i)/len(json_files)*100.), end=' ')
+        print '[progress] >> %2.2f%%\r' % (float(i)/len(json_files)*100.),
         sys.stdout.flush()
 
 
@@ -136,8 +136,8 @@ if __name__ == "__main__":
 
     download_path = path.join(args.download_path, args.project + "_commits")
 
-    print("Downloading data for project " + args.account  + "/" + args.project)
-    print("download_path = " + download_path)
+    print "Downloading data for project " + args.account  + "/" + args.project
+    print  "download_path = " + download_path
 
     # create folders
     diff_path = path.join(download_path, "diff")
